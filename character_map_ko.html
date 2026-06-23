@@ -1,0 +1,1711 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>창작 캐릭터 성격 맵</title>
+  <style>
+    :root {
+      --bg: #f6f7f8;
+      --surface: #ffffff;
+      --surface-2: #eef4f3;
+      --ink: #1f2933;
+      --muted: #66727f;
+      --line: #d9e0e4;
+      --teal: #247c78;
+      --teal-dark: #195d5a;
+      --coral: #d8644a;
+      --gold: #b6862e;
+      --violet: #6d5cae;
+      --blue: #3d6f9f;
+      --danger: #b84242;
+      --shadow: 0 12px 30px rgba(31, 41, 51, .08);
+      --radius: 8px;
+      color-scheme: light;
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    button {
+      min-height: 38px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      padding: 0 13px;
+      background: var(--teal);
+      color: #fff;
+      cursor: pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      white-space: nowrap;
+    }
+
+    button:hover { background: var(--teal-dark); }
+    button:active { transform: translateY(1px); }
+    button.secondary { background: #fff; color: var(--ink); border-color: var(--line); }
+    button.secondary:hover { background: #f0f4f5; }
+    button.ghost { background: transparent; color: var(--teal-dark); border-color: var(--line); }
+    button.danger { background: var(--danger); }
+    button.danger:hover { background: #933535; }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      min-height: 40px;
+      padding: 9px 10px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(36, 124, 120, .16);
+    }
+
+    textarea {
+      min-height: 86px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    input[type="range"] {
+      accent-color: var(--teal);
+      padding: 0;
+      min-height: 32px;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(246, 247, 248, .94);
+      backdrop-filter: blur(10px);
+    }
+
+    .top-inner {
+      width: min(1440px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 5px;
+      font-size: clamp(24px, 3.2vw, 38px);
+      line-height: 1.12;
+    }
+
+    h2 {
+      margin-bottom: 14px;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .lede {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 800px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stat {
+      min-width: 92px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 8px 10px;
+      text-align: right;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 20px;
+      color: var(--teal-dark);
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    main {
+      width: min(1440px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 42px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .surface {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .section-band {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .inline-pick {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 142px;
+      gap: 8px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hint {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .trait-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .trait {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfc;
+      padding: 12px;
+    }
+
+    .trait-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .trait-title {
+      min-width: 0;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .value-chip {
+      min-width: 44px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      text-align: center;
+      background: var(--surface-2);
+      color: var(--teal-dark);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .trait-sides {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .trait-sides span:last-child { text-align: right; }
+
+    .trait-flavor {
+      margin: 6px 0 0;
+      color: #56616d;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(180px, 1.2fr) minmax(140px, .7fr) minmax(170px, .8fr);
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .characters {
+      display: grid;
+      gap: 10px;
+      max-height: 560px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--blue);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 13px;
+    }
+
+    .card.active {
+      border-left-color: var(--coral);
+      background: #fffaf8;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .name {
+      font-weight: 900;
+      font-size: 18px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .meta-link {
+      border: 0;
+      background: transparent;
+      color: var(--teal-dark);
+      padding: 0;
+      min-height: auto;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .pill-list {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-height: 26px;
+      border: 1px solid #d7e2e1;
+      border-radius: 999px;
+      padding: 3px 9px;
+      background: #f3faf9;
+      color: #285c59;
+      font-size: 12px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .pill.alt {
+      background: #fff4ef;
+      border-color: #efcfbf;
+      color: #91432f;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .memo {
+      margin: 9px 0;
+      color: #3f4a54;
+      font-size: 13px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .mini {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+
+    .mini button {
+      min-height: 32px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    .canvas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .canvas-wrap {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfc;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 700 / 480;
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .overlay-list {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      min-height: 30px;
+      margin-top: 8px;
+    }
+
+    .cols {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .box {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfc;
+      padding: 13px;
+    }
+
+    .score {
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--coral);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .bar {
+      position: relative;
+      height: 10px;
+      border-radius: 999px;
+      background: #e6ecef;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .bar > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--teal), var(--coral));
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .table th, .table td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 6px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .table th {
+      color: #34414d;
+      background: #f2f6f7;
+      font-weight: 900;
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .rank-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .rank-set {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: 14px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+      line-height: 1.65;
+    }
+
+    .rank-link {
+      margin-top: 8px;
+      width: 100%;
+    }
+
+    .rank-detail {
+      margin-top: 14px;
+    }
+
+    .rank-detail-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .empty {
+      border: 1px dashed #bec9cf;
+      border-radius: var(--radius);
+      padding: 18px;
+      color: var(--muted);
+      background: #f9fbfb;
+      text-align: center;
+      line-height: 1.55;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1120px) {
+      .grid, .canvas-grid, .cols {
+        grid-template-columns: 1fr;
+      }
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+      .top-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .stats {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .top-inner, main {
+        width: min(100% - 20px, 1440px);
+      }
+      .surface, .section-band {
+        padding: 14px;
+      }
+      .inline-pick, .control-grid, .analysis-grid, .rank-grid {
+        grid-template-columns: 1fr;
+      }
+      .card-head {
+        display: grid;
+      }
+      .stats {
+        width: 100%;
+      }
+      .stat {
+        flex: 1 1 100px;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="top-inner">
+        <div>
+          <h1>창작 캐릭터 성격 맵</h1>
+          <p class="lede">캐릭터 성격 결을 저장하고, 서로 겹치는지 레이더 차트, 2축 맵, 궁합 진단, 세계관/태그 분석으로 살펴보는 개인용 작업대.</p>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="stat"><b id="statCount">0</b><span>캐릭터</span></div>
+          <div class="stat"><b id="statWorlds">0</b><span>세계관</span></div>
+          <div class="stat"><b id="statTags">0</b><span>태그</span></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="grid">
+        <aside class="stack">
+          <section class="surface" id="editor">
+            <h2>캐릭터 등록 · 편집</h2>
+            <form id="charForm">
+              <input type="hidden" id="editingId">
+              <div class="form-grid">
+                <label>이름
+                  <input id="name" type="text" placeholder="예: 루카, 아이리스, 노아">
+                </label>
+                <label>작품 · 세계관 · 기획
+                  <div class="inline-pick">
+                    <input id="world" type="text" placeholder="예: 별빛 거리">
+                    <select id="worldPick" title="저장된 세계관 불러오기"></select>
+                  </div>
+                </label>
+                <label>포지션 · 역할
+                  <div class="inline-pick">
+                    <input id="role" type="text" placeholder="예: 학생, 기사, 연구자, 여행자">
+                    <select id="rolePick" title="저장된 역할 불러오기"></select>
+                  </div>
+                </label>
+                <label>태그
+                  <div class="inline-pick">
+                    <input id="tags" type="text" placeholder="예: 햇살캐, 츤데레, 비밀 많음">
+                    <select id="tagPick" title="저장된 태그 추가"></select>
+                  </div>
+                </label>
+                <label>메모
+                  <textarea id="memo" placeholder="예: 사람들 앞에서는 능청맞지만, 혼자 남으면 오래 곱씹는 타입."></textarea>
+                </label>
+              </div>
+              <div class="actions" style="margin-top: 12px;">
+                <button type="submit" id="saveBtn">저장</button>
+                <button type="button" class="secondary" id="resetBtn">새 캐릭터 입력</button>
+              </div>
+            </form>
+            <p class="hint">입력한 세계관, 역할, 태그는 다음 캐릭터를 만들 때 후보로 다시 쓸 수 있어요.</p>
+          </section>
+
+          <section class="surface">
+            <h2>속성 슬라이더</h2>
+            <p class="hint" style="margin-top: -5px;">0은 왼쪽 속성, 50은 중간형, 100은 오른쪽 속성입니다.</p>
+            <div id="traitInputs" class="trait-list"></div>
+          </section>
+        </aside>
+
+        <div class="stack">
+          <section class="section-band">
+            <h2>캐릭터 목록</h2>
+            <div class="button-row">
+              <button type="button" class="secondary" id="toggleList">목록 접기</button>
+              <button type="button" class="secondary" id="sampleBtn">샘플 넣기</button>
+              <button type="button" class="secondary" id="exportBtn">JSON 내보내기</button>
+              <label class="secondary" style="display: inline-flex; align-items: center; min-height: 38px; border: 1px solid var(--line); border-radius: 7px; padding: 0 13px; background: #fff; cursor: pointer; font-size: 14px;">
+                JSON 불러오기
+                <input id="importFile" type="file" accept="application/json,.json" class="hidden">
+              </label>
+              <button type="button" class="danger" id="clearBtn">전체 삭제</button>
+            </div>
+            <div class="toolbar">
+              <input id="search" type="search" placeholder="이름 · 세계관 · 태그 · 메모 검색">
+              <select id="worldFilter"></select>
+              <select id="sort"></select>
+            </div>
+            <div id="listWrap" class="characters"></div>
+          </section>
+
+          <section class="canvas-grid">
+            <div class="section-band">
+              <h2>레이더 차트</h2>
+              <div class="control-grid">
+                <select id="radarPick"></select>
+                <div class="actions">
+                  <button type="button" class="secondary" id="addRadarOverlay">겹쳐 보기 추가</button>
+                  <button type="button" class="secondary" id="clearRadarOverlay">겹침 해제</button>
+                </div>
+              </div>
+              <div class="canvas-wrap"><canvas id="radar" width="700" height="480"></canvas></div>
+              <div id="overlayList" class="overlay-list"></div>
+            </div>
+
+            <div class="section-band">
+              <h2>2축 맵</h2>
+              <div class="control-grid">
+                <label>가로축
+                  <select id="xAxis"></select>
+                </label>
+                <label>세로축
+                  <select id="yAxis"></select>
+                </label>
+              </div>
+              <div class="canvas-wrap"><canvas id="map" width="700" height="480"></canvas></div>
+              <p class="hint">점이나 이름 근처를 누르면 해당 캐릭터가 레이더 차트에 표시됩니다.</p>
+            </div>
+          </section>
+
+          <section class="section-band">
+            <h2>캐릭터 비교 · 관계성 진단</h2>
+            <div class="toolbar">
+              <select id="compA"></select>
+              <select id="compB"></select>
+              <select id="rel"></select>
+            </div>
+            <div class="actions" style="margin-bottom: 12px;">
+              <button type="button" id="compareBtn">비교하기</button>
+            </div>
+            <div id="compareResult"></div>
+          </section>
+
+          <section class="section-band">
+            <h2>캐릭터 만들기 힌트</h2>
+            <div id="suggestions"></div>
+          </section>
+
+          <section class="section-band">
+            <h2>남캐 속성 타입 분석</h2>
+            <div id="mbti"></div>
+          </section>
+
+          <section class="section-band">
+            <h2>세계관별 성향 비교</h2>
+            <div id="worldAnalysis"></div>
+          </section>
+
+          <section class="section-band">
+            <h2>태그별 분석</h2>
+            <div id="tagAnalysis"></div>
+          </section>
+
+          <section class="section-band">
+            <h2>간단 랭킹</h2>
+            <div id="ranking"></div>
+            <div id="rankDetail" class="rank-detail"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const TRAITS = [
+      { key: "calm_intense", left: "친절함", right: "싸가지없음", leftFlavor: "말투와 행동이 다정해서 호감 스택을 차곡차곡 쌓는 타입", rightFlavor: "예의보다 직구가 먼저 나가고, 까칠한 말맛으로 장면을 잡아먹는 타입" },
+      { key: "logical_emotional", left: "이성파", right: "감정파", leftFlavor: "근거와 계산으로 움직이는 두뇌 담당", rightFlavor: "마음과 관계의 온도에 먼저 반응하는 타입" },
+      { key: "careful_impulsive", left: "신중함", right: "돌진형", leftFlavor: "함정부터 살피는 계획형", rightFlavor: "말보다 몸이 먼저 나가는 추진 담당" },
+      { key: "extrovert_introvert", left: "귀여움", right: "섹시함", leftFlavor: "보호욕, 장난기, 볼 찌르고 싶은 빈틈이 살아나는 타입", rightFlavor: "시선 처리와 분위기만으로 장면의 온도를 올리는 타입" },
+      { key: "cooperative_independent", left: "협력형", right: "독고다이", leftFlavor: "파티 밸런스를 챙기는 팀 플레이어", rightFlavor: "혼자서도 길을 뚫는 단독 행동파" },
+      { key: "realistic_dreamy", left: "철없음", right: "어른스러움", leftFlavor: "눈앞의 재미와 감정에 솔직해서 사고를 몰고 오는 소년미", rightFlavor: "상황을 삼키고 책임지는 무게감, 기대고 싶어지는 어른미" },
+      { key: "orderly_free", left: "클리셰적임", right: "특이함", leftFlavor: "익숙해서 바로 맛이 오는 정석 속성, 왕도 남캐의 안정감", rightFlavor: "한 번 보면 안 잊히는 설정, 관계도에서 튀는 변수 담당" },
+      { key: "honest_contrarian", left: "순둥함", right: "삐딱함", leftFlavor: "말을 곧이곧대로 받아들이는 정직한 결", rightFlavor: "괜히 반대로 틀어보는 반골 기질" },
+      { key: "confident_insecure", left: "허접함", right: "먼치킨", leftFlavor: "허당, 삽질, 놀림받는 맛이 살아나는 빈틈 담당", rightFlavor: "능력치와 존재감이 이미 완성형인 최강자/사기캐 결" },
+      { key: "caretaking_detached", left: "돌봄형", right: "거리두기", leftFlavor: "챙겨주고 잔소리도 하는 보호자 결", rightFlavor: "필요 이상으로 얽히지 않는 관찰자 결" },
+      { key: "direct_awkward", left: "애정 직진", right: "애정 서툼", leftFlavor: "좋으면 좋다고 바로 말하는 직구 타입", rightFlavor: "마음은 큰데 표현이 꼬이는 츤데레 결" },
+      { key: "dependent_independent", left: "겉과속이같음", right: "하라구로", leftFlavor: "표정, 말, 속내가 크게 어긋나지 않는 투명한 타입", rightFlavor: "웃는 얼굴 뒤에 계산과 속셈을 숨기는 복흑 타입" }
+    ];
+
+    const STORE = "koCharacterPersonalityMapV1";
+    const COLORS = ["#247c78", "#d8644a", "#6d5cae", "#b6862e", "#3d6f9f", "#455a64", "#c0507c"];
+    const RELATIONS = {
+      general: { label: "종합", story: "비슷한 부분은 안정감으로, 다른 부분은 에피소드의 엔진으로 쓰기 좋습니다." },
+      friend: { label: "친구", story: "편한 공감대와 서로의 세계를 넓혀주는 자극을 같이 만들 수 있습니다." },
+      romance: { label: "연애", story: "끌리는 지점과 불안의 씨앗이 함께 보여서 감정선 굴리기에 좋습니다." },
+      buddy: { label: "콤비", story: "한쪽이 벌이고 한쪽이 수습하거나, 서로의 빈칸을 메우는 장면이 살아납니다." },
+      rival: { label: "라이벌", story: "차이는 충돌의 불씨가 되고, 닮은 점은 인정하기 싫은 거울이 됩니다." },
+      mentor: { label: "사제/주종", story: "역할 차이와 신뢰의 균열을 함께 다룰 수 있는 조합입니다." },
+      family: { label: "가족", story: "가깝기 때문에 더 잘 알고, 그래서 더 정확히 부딪히는 관계로 쓰기 좋습니다." }
+    };
+
+    let chars = [];
+    let selectedId = "";
+    let radarOverlays = [];
+    let mapPoints = [];
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const avg = (arr) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+    const byId = (id) => chars.find((c) => c.id === id);
+
+    function init() {
+      load();
+      renderTraitInputs();
+      renderAxisOptions();
+      renderSort();
+      renderRelationOptions();
+      bind();
+      if (!selectedId && chars[0]) selectedId = chars[0].id;
+      renderAll();
+    }
+
+    function defaultTraits() {
+      return Object.fromEntries(TRAITS.map((t) => [t.key, 50]));
+    }
+
+    function uid() {
+      return "c_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
+    }
+
+    function normalize(raw) {
+      const base = defaultTraits();
+      return {
+        id: raw.id || uid(),
+        name: String(raw.name || "이름 없는 캐릭터").trim() || "이름 없는 캐릭터",
+        world: String(raw.world || "").trim(),
+        role: String(raw.role || "").trim(),
+        tags: Array.isArray(raw.tags) ? raw.tags.map((t) => String(t).trim()).filter(Boolean) : splitTags(raw.tags || ""),
+        memo: String(raw.memo || ""),
+        traits: Object.fromEntries(TRAITS.map((t) => [t.key, clamp(Number(raw.traits?.[t.key] ?? base[t.key]), 0, 100)])),
+        createdAt: Number(raw.createdAt || Date.now()),
+        updatedAt: Number(raw.updatedAt || raw.createdAt || Date.now())
+      };
+    }
+
+    function splitTags(text) {
+      return String(text || "")
+        .split(/[,\n#]+/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+        .filter((t, i, arr) => arr.indexOf(t) === i);
+    }
+
+    function load() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORE) || "[]");
+        const list = Array.isArray(raw) ? raw : raw.characters;
+        chars = Array.isArray(list) ? list.map(normalize) : [];
+      } catch {
+        chars = [];
+      }
+    }
+
+    function save() {
+      localStorage.setItem(STORE, JSON.stringify({ version: 1, characters: chars }));
+    }
+
+    function bind() {
+      $("charForm").addEventListener("submit", saveForm);
+      $("resetBtn").addEventListener("click", resetForm);
+      $("worldPick").addEventListener("change", (e) => { if (e.target.value) $("world").value = e.target.value; e.target.value = ""; });
+      $("rolePick").addEventListener("change", (e) => { if (e.target.value) $("role").value = e.target.value; e.target.value = ""; });
+      $("tagPick").addEventListener("change", (e) => { if (e.target.value) addTag(e.target.value); e.target.value = ""; });
+      $("toggleList").addEventListener("click", toggleList);
+      $("sampleBtn").addEventListener("click", loadSamples);
+      $("exportBtn").addEventListener("click", exportJson);
+      $("importFile").addEventListener("change", importJson);
+      $("clearBtn").addEventListener("click", clearAll);
+      $("search").addEventListener("input", renderList);
+      $("worldFilter").addEventListener("change", renderList);
+      $("sort").addEventListener("change", renderList);
+      $("listWrap").addEventListener("click", listClick);
+      $("radarPick").addEventListener("change", (e) => { selectedId = e.target.value; drawRadar(); drawMap(); renderList(); });
+      $("addRadarOverlay").addEventListener("click", addRadarOverlay);
+      $("clearRadarOverlay").addEventListener("click", () => { radarOverlays = []; renderOverlayList(); drawRadar(); });
+      $("overlayList").addEventListener("click", overlayListClick);
+      $("xAxis").addEventListener("change", drawMap);
+      $("yAxis").addEventListener("change", drawMap);
+      $("map").addEventListener("click", mapClick);
+      $("map").addEventListener("mousemove", mapMove);
+      $("compareBtn").addEventListener("click", renderCompare);
+      $("compA").addEventListener("change", renderCompare);
+      $("compB").addEventListener("change", renderCompare);
+      $("rel").addEventListener("change", renderCompare);
+      $("ranking").addEventListener("click", rankingClick);
+      $("rankDetail").addEventListener("click", rankDetailClick);
+    }
+
+    function renderTraitInputs() {
+      $("traitInputs").innerHTML = TRAITS.map((t) => `
+        <div class="trait">
+          <div class="trait-head">
+            <div class="trait-title">${esc(t.left)} <span class="sub">⇔</span> ${esc(t.right)}</div>
+            <output class="value-chip" id="out_${t.key}" for="trait_${t.key}">50</output>
+          </div>
+          <input id="trait_${t.key}" type="range" min="0" max="100" value="50" data-trait="${esc(t.key)}">
+          <div class="trait-sides"><span>${esc(t.left)}</span><span>중간</span><span>${esc(t.right)}</span></div>
+          <p class="trait-flavor" id="flavor_${t.key}">${esc(t.leftFlavor)} / ${esc(t.rightFlavor)}</p>
+        </div>
+      `).join("");
+
+      TRAITS.forEach((t) => {
+        const input = $("trait_" + t.key);
+        input.addEventListener("input", () => updateTraitOutput(t.key));
+        updateTraitOutput(t.key);
+      });
+    }
+
+    function updateTraitOutput(key) {
+      const t = TRAITS.find((x) => x.key === key);
+      const value = Number($("trait_" + key).value);
+      $("out_" + key).textContent = value;
+      $("flavor_" + key).textContent = `${tendencyLabel(value, t)} · ${flavorFor(value, t)}`;
+    }
+
+    function flavorFor(value, trait) {
+      if (value < 38) return trait.leftFlavor;
+      if (value > 62) return trait.rightFlavor;
+      return "어느 한쪽으로 튀기보다 상황에 따라 결이 바뀌는 중간형";
+    }
+
+    function renderAxisOptions() {
+      const html = TRAITS.map((t) => `<option value="${esc(t.key)}">${esc(t.left)} ⇔ ${esc(t.right)}</option>`).join("");
+      $("xAxis").innerHTML = html;
+      $("yAxis").innerHTML = html;
+      $("yAxis").value = TRAITS[3].key;
+    }
+
+    function renderSort() {
+      const base = `
+        <option value="new">정렬: 최근 저장순</option>
+        <option value="old">오래된 순</option>
+        <option value="nameA">이름 오름차순</option>
+        <option value="nameZ">이름 내림차순</option>
+        <option value="world">세계관 오름차순</option>
+        <option value="role">역할 오름차순</option>
+      `;
+      const traitSort = TRAITS.map((t) => `
+        <option value="l_${esc(t.key)}">${esc(t.left)} 강한 순</option>
+        <option value="r_${esc(t.key)}">${esc(t.right)} 강한 순</option>
+      `).join("");
+      $("sort").innerHTML = base + traitSort;
+    }
+
+    function renderRelationOptions() {
+      $("rel").innerHTML = Object.entries(RELATIONS).map(([key, rel]) => `<option value="${esc(key)}">${esc(rel.label)}</option>`).join("");
+    }
+
+    function readForm() {
+      return normalize({
+        id: $("editingId").value || uid(),
+        name: $("name").value,
+        world: $("world").value,
+        role: $("role").value,
+        tags: splitTags($("tags").value),
+        memo: $("memo").value,
+        traits: Object.fromEntries(TRAITS.map((t) => [t.key, Number($("trait_" + t.key).value)])),
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+    }
+
+    function saveForm(event) {
+      event.preventDefault();
+      const data = readForm();
+      const editingId = $("editingId").value;
+      const idx = chars.findIndex((c) => c.id === editingId);
+      if (idx >= 0) {
+        data.createdAt = chars[idx].createdAt;
+        chars[idx] = { ...data, updatedAt: Date.now() };
+      } else {
+        chars.unshift(data);
+      }
+      selectedId = data.id;
+      save();
+      resetForm();
+      selectedId = data.id;
+      renderAll();
+    }
+
+    function fillForm(c) {
+      $("editingId").value = c.id;
+      $("name").value = c.name;
+      $("world").value = c.world;
+      $("role").value = c.role;
+      $("tags").value = c.tags.join(", ");
+      $("memo").value = c.memo;
+      TRAITS.forEach((t) => {
+        $("trait_" + t.key).value = c.traits[t.key] ?? 50;
+        updateTraitOutput(t.key);
+      });
+      $("saveBtn").textContent = "수정 저장";
+      $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetForm() {
+      $("charForm").reset();
+      $("editingId").value = "";
+      TRAITS.forEach((t) => {
+        $("trait_" + t.key).value = 50;
+        updateTraitOutput(t.key);
+      });
+      $("saveBtn").textContent = "저장";
+    }
+
+    function addTag(tag) {
+      const tags = splitTags($("tags").value);
+      if (!tags.includes(tag)) tags.push(tag);
+      $("tags").value = tags.join(", ");
+    }
+
+    function unique(values) {
+      return [...new Set(values.map((v) => String(v || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ko"));
+    }
+
+    function fillSelect(el, firstLabel, values) {
+      el.innerHTML = `<option value="">${esc(firstLabel)}</option>` + values.map((v) => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
+    }
+
+    function renderCandidates() {
+      const worlds = unique(chars.map((c) => c.world));
+      const roles = unique(chars.map((c) => c.role));
+      const tags = unique(chars.flatMap((c) => c.tags));
+      fillSelect($("worldPick"), "세계관 후보", worlds);
+      fillSelect($("rolePick"), "역할 후보", roles);
+      fillSelect($("tagPick"), "태그 추가", tags);
+      fillSelect($("worldFilter"), "모든 세계관", worlds);
+      $("statCount").textContent = chars.length;
+      $("statWorlds").textContent = worlds.length;
+      $("statTags").textContent = tags.length;
+    }
+
+    function filtered() {
+      const q = $("search").value.trim().toLowerCase();
+      const world = $("worldFilter").value;
+      return chars.filter((c) => {
+        if (world && c.world !== world) return false;
+        if (!q) return true;
+        const hay = [c.name, c.world, c.role, c.memo, c.tags.join(" ")].join(" ").toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    function sorted(list) {
+      const sort = $("sort").value;
+      const arr = [...list];
+      if (sort === "old") arr.sort((a, b) => a.createdAt - b.createdAt);
+      else if (sort === "nameA") arr.sort((a, b) => a.name.localeCompare(b.name, "ko"));
+      else if (sort === "nameZ") arr.sort((a, b) => b.name.localeCompare(a.name, "ko"));
+      else if (sort === "world") arr.sort((a, b) => (a.world || "").localeCompare(b.world || "", "ko"));
+      else if (sort === "role") arr.sort((a, b) => (a.role || "").localeCompare(b.role || "", "ko"));
+      else if (sort.startsWith("l_")) {
+        const key = sort.slice(2);
+        arr.sort((a, b) => (a.traits[key] || 50) - (b.traits[key] || 50));
+      } else if (sort.startsWith("r_")) {
+        const key = sort.slice(2);
+        arr.sort((a, b) => (b.traits[key] || 50) - (a.traits[key] || 50));
+      } else arr.sort((a, b) => b.createdAt - a.createdAt);
+      return arr;
+    }
+
+    function renderList() {
+      const list = sorted(filtered());
+      const wrap = $("listWrap");
+      if (!chars.length) {
+        wrap.innerHTML = `<div class="empty">아직 등록된 캐릭터가 없습니다.</div>`;
+        return;
+      }
+      if (!list.length) {
+        wrap.innerHTML = `<div class="empty">조건에 맞는 캐릭터가 없습니다.</div>`;
+        return;
+      }
+      wrap.innerHTML = list.map((c) => {
+        const top = strongest(c, 3).map((x) => `<span class="pill alt">${esc(x)}</span>`).join("");
+        const tags = c.tags.length ? c.tags.map((t) => `<button class="pill meta-link" data-filter-tag="${esc(t)}">#${esc(t)}</button>`).join("") : `<span class="sub">태그 없음</span>`;
+        return `
+          <article class="card ${c.id === selectedId ? "active" : ""}" data-id="${esc(c.id)}">
+            <div class="card-head">
+              <div>
+                <div class="name">${esc(c.name)}</div>
+                <div class="sub">
+                  <button class="meta-link" data-filter-world="${esc(c.world || "")}">${esc(c.world || "세계관 미정")}</button>
+                  · ${esc(c.role || "역할 미정")} · ${esc(attributeType(c))}
+                </div>
+              </div>
+              <div class="pill">${esc(tendencyLabel(avgTrait(c), { left: "왼쪽", right: "오른쪽" }))}</div>
+            </div>
+            <div class="pill-list">${tags}</div>
+            <p class="memo">${esc(c.memo || "메모 없음")}</p>
+            <div class="pill-list">${top}</div>
+            <div class="mini">
+              <button type="button" class="secondary" data-act="select" data-id="${esc(c.id)}">표시</button>
+              <button type="button" class="secondary" data-act="overlay" data-id="${esc(c.id)}">겹치기</button>
+              <button type="button" class="secondary" data-act="edit" data-id="${esc(c.id)}">편집</button>
+              <button type="button" class="danger" data-act="delete" data-id="${esc(c.id)}">삭제</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function listClick(event) {
+      const tag = event.target.closest("[data-filter-tag]");
+      if (tag) {
+        $("search").value = tag.dataset.filterTag;
+        renderList();
+        return;
+      }
+      const world = event.target.closest("[data-filter-world]");
+      if (world && world.dataset.filterWorld) {
+        $("worldFilter").value = world.dataset.filterWorld;
+        renderList();
+        return;
+      }
+      const btn = event.target.closest("[data-act]");
+      if (!btn) return;
+      const c = byId(btn.dataset.id);
+      if (!c) return;
+      if (btn.dataset.act === "select") {
+        selectedId = c.id;
+        $("radarPick").value = c.id;
+        drawRadar();
+        drawMap();
+        renderList();
+      }
+      if (btn.dataset.act === "overlay") {
+        selectedId = selectedId || c.id;
+        if (!radarOverlays.includes(c.id) && c.id !== selectedId) radarOverlays.push(c.id);
+        renderOverlayList();
+        drawRadar();
+      }
+      if (btn.dataset.act === "edit") fillForm(c);
+      if (btn.dataset.act === "delete") {
+        if (confirm(`'${c.name}' 캐릭터를 삭제할까요?`)) {
+          chars = chars.filter((item) => item.id !== c.id);
+          radarOverlays = radarOverlays.filter((id) => id !== c.id);
+          if (selectedId === c.id) selectedId = chars[0]?.id || "";
+          save();
+          renderAll();
+        }
+      }
+    }
+
+    function toggleList() {
+      const wrap = $("listWrap");
+      wrap.classList.toggle("hidden");
+      $("toggleList").textContent = wrap.classList.contains("hidden") ? "목록 펼치기" : "목록 접기";
+    }
+
+    function clearCanvas(canvas, text) {
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#fbfcfc";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (text) {
+        ctx.fillStyle = "#66727f";
+        ctx.font = "16px Malgun Gothic, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+      }
+      return ctx;
+    }
+
+    function renderRadarOptions() {
+      const empty = chars.length ? "" : `<option value="">캐릭터 없음</option>`;
+      $("radarPick").innerHTML = empty + chars.map((c) => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
+      if (selectedId && byId(selectedId)) $("radarPick").value = selectedId;
+    }
+
+    function addRadarOverlay() {
+      const id = $("radarPick").value;
+      if (!id) return;
+      if (!selectedId) selectedId = id;
+      if (id !== selectedId && !radarOverlays.includes(id)) radarOverlays.push(id);
+      renderOverlayList();
+      drawRadar();
+    }
+
+    function overlayListClick(event) {
+      const btn = event.target.closest("[data-remove-overlay]");
+      if (!btn) return;
+      radarOverlays = radarOverlays.filter((id) => id !== btn.dataset.removeOverlay);
+      renderOverlayList();
+      drawRadar();
+    }
+
+    function renderOverlayList() {
+      const shown = radarOverlays.map(byId).filter(Boolean);
+      if (!shown.length) {
+        $("overlayList").innerHTML = `<span class="note">현재는 1명 표시입니다. 다른 캐릭터를 겹치면 결이 얼마나 다른지 보입니다.</span>`;
+        return;
+      }
+      $("overlayList").innerHTML = shown.map((c) => `<button type="button" class="pill meta-link" data-remove-overlay="${esc(c.id)}">${esc(c.name)} ×</button>`).join("");
+    }
+
+    function drawRadar() {
+      const canvas = $("radar");
+      const ctx = clearCanvas(canvas, chars.length ? "" : "캐릭터를 등록하면 레이더 차트가 표시됩니다.");
+      if (!chars.length) return;
+      const selected = byId(selectedId) || chars[0];
+      if (!selectedId) selectedId = selected.id;
+      const ids = [selected.id, ...radarOverlays.filter((id) => id !== selected.id)];
+      const center = { x: canvas.width / 2, y: canvas.height / 2 + 6 };
+      const radius = 160;
+
+      ctx.strokeStyle = "#d9e0e4";
+      ctx.lineWidth = 1;
+      ctx.fillStyle = "#66727f";
+      ctx.font = "12px Malgun Gothic, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      for (let ring = 1; ring <= 4; ring++) {
+        ctx.beginPath();
+        TRAITS.forEach((t, i) => {
+          const p = radarPoint(i, radius * ring / 4, center);
+          if (i === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        });
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      TRAITS.forEach((t, i) => {
+        const outer = radarPoint(i, radius, center);
+        ctx.beginPath();
+        ctx.moveTo(center.x, center.y);
+        ctx.lineTo(outer.x, outer.y);
+        ctx.stroke();
+        const label = radarPoint(i, radius + 46, center);
+        const text = `${t.left} / ${t.right}`;
+        wrapCanvasText(ctx, text, label.x, label.y, 82, 13);
+      });
+
+      ids.map(byId).filter(Boolean).forEach((c, idx) => {
+        const color = COLORS[idx % COLORS.length];
+        ctx.beginPath();
+        TRAITS.forEach((t, i) => {
+          const value = c.traits[t.key] ?? 50;
+          const p = radarPoint(i, radius * value / 100, center);
+          if (i === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        });
+        ctx.closePath();
+        ctx.fillStyle = hexToRgba(color, .16);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = idx === 0 ? 3 : 2;
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      ids.map(byId).filter(Boolean).forEach((c, idx) => {
+        ctx.fillStyle = COLORS[idx % COLORS.length];
+        ctx.fillRect(24, 24 + idx * 22, 12, 12);
+        ctx.fillStyle = "#1f2933";
+        ctx.font = "13px Malgun Gothic, sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(c.name, 42, 31 + idx * 22);
+      });
+    }
+
+    function radarPoint(index, radius, center) {
+      const angle = -Math.PI / 2 + index * Math.PI * 2 / TRAITS.length;
+      return { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius };
+    }
+
+    function drawMap() {
+      const canvas = $("map");
+      const ctx = clearCanvas(canvas, chars.length ? "" : "캐릭터를 등록하면 2축 맵에 표시됩니다.");
+      mapPoints = [];
+      if (!chars.length) return;
+      const xTrait = TRAITS.find((t) => t.key === $("xAxis").value) || TRAITS[0];
+      const yTrait = TRAITS.find((t) => t.key === $("yAxis").value) || TRAITS[3];
+      const pad = { l: 86, r: 44, t: 56, b: 70 };
+      const w = canvas.width - pad.l - pad.r;
+      const h = canvas.height - pad.t - pad.b;
+
+      ctx.strokeStyle = "#d9e0e4";
+      ctx.lineWidth = 1;
+      ctx.fillStyle = "#fbfcfc";
+      ctx.fillRect(pad.l, pad.t, w, h);
+      for (let i = 0; i <= 4; i++) {
+        const x = pad.l + w * i / 4;
+        const y = pad.t + h * i / 4;
+        ctx.beginPath();
+        ctx.moveTo(x, pad.t);
+        ctx.lineTo(x, pad.t + h);
+        ctx.moveTo(pad.l, y);
+        ctx.lineTo(pad.l + w, y);
+        ctx.stroke();
+      }
+      ctx.strokeStyle = "#87939f";
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t + h / 2);
+      ctx.lineTo(pad.l + w, pad.t + h / 2);
+      ctx.moveTo(pad.l + w / 2, pad.t);
+      ctx.lineTo(pad.l + w / 2, pad.t + h);
+      ctx.stroke();
+
+      ctx.fillStyle = "#34414d";
+      ctx.font = "13px Malgun Gothic, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(xTrait.left, pad.l, pad.t + h + 34);
+      ctx.fillText(xTrait.right, pad.l + w, pad.t + h + 34);
+      ctx.fillText(yTrait.left, pad.l + w / 2, pad.t - 26);
+      ctx.fillText(yTrait.right, pad.l + w / 2, pad.t + h + 54);
+
+      chars.forEach((c, idx) => {
+        const x = pad.l + w * (c.traits[xTrait.key] ?? 50) / 100;
+        const y = pad.t + h * (c.traits[yTrait.key] ?? 50) / 100;
+        mapPoints.push({ id: c.id, x, y });
+        const active = c.id === selectedId;
+        ctx.beginPath();
+        ctx.arc(x, y, active ? 8 : 6, 0, Math.PI * 2);
+        ctx.fillStyle = active ? "#d8644a" : COLORS[idx % COLORS.length];
+        ctx.fill();
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = "#1f2933";
+        ctx.font = active ? "bold 13px Malgun Gothic, sans-serif" : "12px Malgun Gothic, sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(c.name, x + 10, y - 10);
+      });
+    }
+
+    function mapClick(event) {
+      const rect = $("map").getBoundingClientRect();
+      const scaleX = $("map").width / rect.width;
+      const scaleY = $("map").height / rect.height;
+      const x = (event.clientX - rect.left) * scaleX;
+      const y = (event.clientY - rect.top) * scaleY;
+      const hit = mapPoints.find((p) => Math.hypot(p.x - x, p.y - y) < 18);
+      if (!hit) return;
+      selectedId = hit.id;
+      $("radarPick").value = hit.id;
+      renderList();
+      drawRadar();
+      drawMap();
+    }
+
+    function mapMove(event) {
+      const rect = $("map").getBoundingClientRect();
+      const scaleX = $("map").width / rect.width;
+      const scaleY = $("map").height / rect.height;
+      const x = (event.clientX - rect.left) * scaleX;
+      const y = (event.clientY - rect.top) * scaleY;
+      const hit = mapPoints.some((p) => Math.hypot(p.x - x, p.y - y) < 18);
+      $("map").style.cursor = hit ? "pointer" : "default";
+    }
+
+    function renderCompareOptions() {
+      const html = chars.length ? chars.map((c) => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("") : `<option value="">캐릭터 없음</option>`;
+      $("compA").innerHTML = html;
+      $("compB").innerHTML = html;
+      if (chars[0]) $("compA").value = chars[0].id;
+      if (chars[1]) $("compB").value = chars[1].id;
+    }
+
+    function renderCompare() {
+      const result = $("compareResult");
+      if (chars.length < 2) {
+        result.innerHTML = `<div class="empty">비교하려면 캐릭터가 2명 이상 필요합니다.</div>`;
+        return;
+      }
+      const a = byId($("compA").value);
+      const b = byId($("compB").value);
+      if (!a || !b || a.id === b.id) {
+        result.innerHTML = `<div class="empty">서로 다른 캐릭터 2명을 골라주세요.</div>`;
+        return;
+      }
+      const diffs = TRAITS.map((t) => ({ t, diff: Math.abs((a.traits[t.key] ?? 50) - (b.traits[t.key] ?? 50)) }))
+        .sort((x, y) => x.diff - y.diff);
+      const score = Math.round(100 - avg(diffs.map((x) => x.diff)));
+      const close = diffs.slice(0, 4);
+      const far = [...diffs].sort((x, y) => y.diff - x.diff).slice(0, 4);
+      const rel = RELATIONS[$("rel").value] || RELATIONS.general;
+      const scoreText = score >= 72 ? "닮은 결이 강한 조합" : score >= 48 ? "겹침과 대비가 섞인 조합" : "대비가 선명한 조합";
+      result.innerHTML = `
+        <div class="cols">
+          <div class="box">
+            <div class="score">${score}</div>
+            <h3>${esc(a.name)} × ${esc(b.name)}</h3>
+            <p class="note">${esc(scoreText)}입니다. 점수가 높을수록 성격 결이 비슷합니다.</p>
+          </div>
+          <div class="box">
+            <h3>닮은 부분</h3>
+            <div class="pill-list">${close.map((x) => `<span class="pill">${esc(x.t.left)} ⇔ ${esc(x.t.right)} · 차이 ${Math.round(x.diff)}</span>`).join("")}</div>
+            <p class="note">같은 편이라는 감각, 오래 알고 지낸 듯한 안정감으로 쓰기 좋습니다.</p>
+          </div>
+          <div class="box">
+            <h3>부딪히는 부분</h3>
+            <div class="pill-list">${far.map((x) => `<span class="pill alt">${esc(x.t.left)} ⇔ ${esc(x.t.right)} · 차이 ${Math.round(x.diff)}</span>`).join("")}</div>
+            <p class="note">${esc(far[0].t.left)} ⇔ ${esc(far[0].t.right)} 축은 갈등, 동경, 질투를 만들기 좋은 불씨입니다.</p>
+          </div>
+        </div>
+        <div class="box" style="margin-top: 12px;">
+          <h3>${esc(rel.label)} 관계로 보면</h3>
+          <p class="note">${esc(rel.story)}</p>
+        </div>
+        <div class="box" style="margin-top: 12px;">
+          <h3>축별 비교</h3>
+          ${diffs.map((x) => {
+            const av = a.traits[x.t.key] ?? 50;
+            const bv = b.traits[x.t.key] ?? 50;
+            return `<p class="note"><strong>${esc(x.t.left)} ⇔ ${esc(x.t.right)}</strong><br>${esc(a.name)}: ${esc(tendencyLabel(av, x.t))} (${av}) · ${esc(b.name)}: ${esc(tendencyLabel(bv, x.t))} (${bv})</p><div class="bar"><span style="width:${Math.round(x.diff)}%"></span></div>`;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function avgTrait(c) {
+      return avg(TRAITS.map((t) => c.traits[t.key] ?? 50));
+    }
+
+    function tendencyLabel(value, trait) {
+      if (value < 38) return `${trait.left} 쪽`;
+      if (value > 62) return `${trait.right} 쪽`;
+      return "중간형";
+    }
+
+    function strongest(c, count = 3) {
+      return TRAITS.map((t) => {
+        const value = c.traits[t.key] ?? 50;
+        return { label: tendencyLabel(value, t), power: Math.abs(value - 50) };
+      }).sort((a, b) => b.power - a.power).slice(0, count).map((x) => x.label);
+    }
+
+    function renderSuggestions() {
+      const box = $("suggestions");
+      if (chars.length < 3) {
+        box.innerHTML = `<div class="empty">3명 이상 등록하면 비어 있는 성격 결을 찾아 제안합니다.</div>`;
+        return;
+      }
+      const ideas = [];
+      TRAITS.forEach((t) => {
+        const values = chars.map((c) => c.traits[t.key] ?? 50);
+        if (!values.some((v) => v <= 26)) ideas.push({ title: `${t.left} 캐릭터가 비어 있어요`, body: `${t.leftFlavor}. 캐릭터 풀에 이쪽 속성이 없으면 관계도가 한쪽 맛으로 기울 수 있어요.` });
+        if (!values.some((v) => v >= 74)) ideas.push({ title: `${t.right} 캐릭터가 비어 있어요`, body: `${t.rightFlavor}. 기존 캐릭터와 대비되는 매력을 만들 때 쓰기 좋은 축입니다.` });
+        if (!values.some((v) => v >= 42 && v <= 58)) ideas.push({ title: `${t.left} ⇔ ${t.right} 중간형이 없어요`, body: `극단끼리만 있으면 조합이 빨리 읽힐 수 있어요. 양쪽 맛을 조금씩 가진 캐릭터를 넣으면 관계 변화가 부드러워집니다.` });
+      });
+      if (!ideas.length) {
+        box.innerHTML = `<div class="box"><h3>성격 분포가 꽤 넓어요</h3><p class="note">다음은 나이대, 직업, 관계 태그, 서사 역할의 편중을 보면 더 다채롭게 만들 수 있습니다.</p></div>`;
+        return;
+      }
+      box.innerHTML = `<div class="analysis-grid">${ideas.slice(0, 8).map((x) => `<div class="box"><h3>${esc(x.title)}</h3><p class="note">${esc(x.body)}</p></div>`).join("")}</div>`;
+    }
+
+    function attributeType(c) {
+      const charm = (c.traits.extrovert_introvert ?? 50) <= 50 ? "귀염상" : "섹시계";
+      const maturity = (c.traits.realistic_dreamy ?? 50) <= 50 ? "철부지" : "어른미";
+      const power = (c.traits.confident_insecure ?? 50) <= 50 ? "허접미" : "먼치킨";
+      const mask = (c.traits.dependent_independent ?? 50) <= 50 ? "겉속같음" : "하라구로";
+      return `${charm} · ${maturity} · ${power} · ${mask}`;
+    }
+
+    function attributeDesc(type) {
+      const parts = type.split(" · ");
+      const bits = [];
+      bits.push(parts[0] === "귀염상" ? "보호욕과 장난기가 먼저 보이는 결" : "분위기와 시선 장악력이 먼저 보이는 결");
+      bits.push(parts[1] === "철부지" ? "서툴고 충동적인 소년미가 살아나는 결" : "책임감과 여유가 느껴지는 어른미가 강한 결");
+      bits.push(parts[2] === "허접미" ? "놀림받는 빈틈과 삽질 포인트가 있는 결" : "능력치나 존재감이 이미 완성형에 가까운 결");
+      bits.push(parts[3] === "겉속같음" ? "말과 속내가 크게 어긋나지 않는 투명한 결" : "웃는 얼굴 뒤에 계산을 숨길 수 있는 복흑 결");
+      return bits.join(", ") + ".";
+    }
+
+    function renderAttributeTypes() {
+      if (!chars.length) {
+        $("mbti").innerHTML = `<div class="empty">캐릭터를 등록하면 남캐 속성 타입 분포가 표시됩니다.</div>`;
+        return;
+      }
+      const groups = {};
+      chars.forEach((c) => {
+        const type = attributeType(c);
+        groups[type] ||= [];
+        groups[type].push(c);
+      });
+      const rows = Object.entries(groups).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0])).map(([type, list]) => `
+        <tr><td><strong>${esc(type)}</strong></td><td>${list.length}</td><td>${list.map((c) => esc(c.name)).join(", ")}</td></tr>
+      `).join("");
+      const cards = Object.entries(groups).sort((a, b) => b[1].length - a[1].length).map(([type, list]) => `
+        <div class="box">
+          <h3>${esc(type)} <span class="sub">${list.length}명</span></h3>
+          <p class="note">${esc(attributeDesc(type))}</p>
+          <div class="pill-list">${list.map((c) => `<span class="pill">${esc(c.name)}</span>`).join("")}</div>
+        </div>
+      `).join("");
+      $("mbti").innerHTML = `
+        <table class="table">
+          <thead><tr><th>타입</th><th>인원</th><th>캐릭터</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <p class="hint">귀여움/섹시함, 철없음/어른스러움, 허접함/먼치킨, 겉속같음/하라구로 축으로 묶은 창작용 속성 분류입니다.</p>
+        <div class="analysis-grid" style="margin-top: 12px;">${cards}</div>
+      `;
+    }
+
+    function renderWorldAnalysis() {
+      if (!chars.length) {
+        $("worldAnalysis").innerHTML = `<div class="empty">등록 후 세계관별 성향이 표시됩니다.</div>`;
+        return;
+      }
+      const groups = groupBy(chars, (c) => c.world || "세계관 미정");
+      $("worldAnalysis").innerHTML = `<div class="analysis-grid">${Object.entries(groups).map(([world, list]) => {
+        const top = topGroupTraits(list, 4);
+        return `<div class="box"><h3>${esc(world)} <span class="sub">${list.length}명</span></h3><div class="pill-list">${top.map((x) => `<span class="pill alt">${esc(x)}</span>`).join("")}</div><p class="note">이 세계관에서는 위 성향이 비교적 강하게 보입니다.</p></div>`;
+      }).join("")}</div>`;
+    }
+
+    function renderTagAnalysis() {
+      const tagged = {};
+      chars.forEach((c) => c.tags.forEach((tag) => {
+        tagged[tag] ||= [];
+        tagged[tag].push(c);
+      }));
+      const entries = Object.entries(tagged).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], "ko")).slice(0, 12);
+      if (!entries.length) {
+        $("tagAnalysis").innerHTML = `<div class="empty">태그를 등록하면 태그별 분석이 표시됩니다.</div>`;
+        return;
+      }
+      $("tagAnalysis").innerHTML = `<div class="analysis-grid">${entries.map(([tag, list]) => `
+        <div class="box">
+          <h3>#${esc(tag)} <span class="sub">${list.length}명</span></h3>
+          <div class="pill-list">${list.map((c) => `<span class="pill">${esc(c.name)}</span>`).join("")}</div>
+          <p class="note">${esc(topGroupTraits(list, 3).join(" · "))}</p>
+        </div>
+      `).join("")}</div>`;
+    }
+
+    function groupBy(list, fn) {
+      return list.reduce((acc, item) => {
+        const key = fn(item);
+        acc[key] ||= [];
+        acc[key].push(item);
+        return acc;
+      }, {});
+    }
+
+    function topGroupTraits(list, count) {
+      return TRAITS.map((t) => {
+        const value = avg(list.map((c) => c.traits[t.key] ?? 50));
+        return { label: tendencyLabel(value, t), power: Math.abs(value - 50) };
+      }).sort((a, b) => b.power - a.power).slice(0, count).map((x) => x.label);
+    }
+
+    function renderRanking() {
+      if (!chars.length) {
+        $("ranking").innerHTML = `<div class="empty">캐릭터를 등록하면 랭킹이 표시됩니다.</div>`;
+        $("rankDetail").innerHTML = "";
+        return;
+      }
+      $("ranking").innerHTML = TRAITS.map((t) => {
+        const left = [...chars].sort((a, b) => (a.traits[t.key] ?? 50) - (b.traits[t.key] ?? 50)).slice(0, 3);
+        const right = [...chars].sort((a, b) => (b.traits[t.key] ?? 50) - (a.traits[t.key] ?? 50)).slice(0, 3);
+        return `
+          <div class="rank-set">
+            <h3>${esc(t.left)} ⇔ ${esc(t.right)}</h3>
+            <div class="rank-grid">
+              <div class="box">
+                <h3>${esc(t.left)} TOP 3</h3>
+                <ol class="list">${left.map((c) => `<li>${esc(c.name)} <span class="sub">${c.traits[t.key]}</span></li>`).join("")}</ol>
+                <button type="button" class="secondary rank-link" data-rank-key="${esc(t.key)}" data-rank-dir="left">전체 보기</button>
+              </div>
+              <div class="box">
+                <h3>${esc(t.right)} TOP 3</h3>
+                <ol class="list">${right.map((c) => `<li>${esc(c.name)} <span class="sub">${c.traits[t.key]}</span></li>`).join("")}</ol>
+                <button type="button" class="secondary rank-link" data-rank-key="${esc(t.key)}" data-rank-dir="right">전체 보기</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function rankingClick(event) {
+      const btn = event.target.closest("[data-rank-key]");
+      if (!btn) return;
+      showFullRanking(btn.dataset.rankKey, btn.dataset.rankDir);
+    }
+
+    function rankDetailClick(event) {
+      if (event.target.closest("#closeRankDetail")) $("rankDetail").innerHTML = "";
+    }
+
+    function showFullRanking(key, dir) {
+      const t = TRAITS.find((x) => x.key === key);
+      if (!t) return;
+      const list = [...chars].sort((a, b) => dir === "left" ? (a.traits[key] ?? 50) - (b.traits[key] ?? 50) : (b.traits[key] ?? 50) - (a.traits[key] ?? 50));
+      const title = `${dir === "left" ? t.left : t.right} 강한 순 전체 랭킹`;
+      $("rankDetail").innerHTML = `
+        <div class="box">
+          <div class="rank-detail-head">
+            <h3>${esc(title)}</h3>
+            <button type="button" class="secondary" id="closeRankDetail">닫기</button>
+          </div>
+          <table class="table">
+            <thead><tr><th>순위</th><th>이름</th><th>세계관</th><th>수치</th><th>성향</th></tr></thead>
+            <tbody>${list.map((c, i) => `<tr><td>${i + 1}</td><td>${esc(c.name)}</td><td>${esc(c.world || "세계관 미정")}</td><td>${c.traits[key]}</td><td>${esc(tendencyLabel(c.traits[key], t))}</td></tr>`).join("")}</tbody>
+          </table>
+        </div>
+      `;
+      $("rankDetail").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function exportJson() {
+      const payload = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), characters: chars }, null, 2);
+      const blob = new Blob([payload], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "character_map_ko.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function importJson(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const raw = JSON.parse(text);
+        const list = Array.isArray(raw) ? raw : raw.characters;
+        if (!Array.isArray(list)) throw new Error("not array");
+        if (chars.length && !confirm("현재 데이터를 불러온 JSON으로 교체할까요?")) return;
+        chars = list.map(normalize);
+        selectedId = chars[0]?.id || "";
+        radarOverlays = [];
+        save();
+        renderAll();
+        alert("JSON을 불러왔습니다.");
+      } catch {
+        alert("JSON을 읽지 못했습니다. 캐릭터 배열 또는 이 도구에서 내보낸 JSON을 선택해주세요.");
+      } finally {
+        event.target.value = "";
+      }
+    }
+
+    function clearAll() {
+      if (!chars.length) return;
+      if (!confirm("등록된 캐릭터를 모두 삭제할까요?")) return;
+      chars = [];
+      selectedId = "";
+      radarOverlays = [];
+      save();
+      resetForm();
+      renderAll();
+    }
+
+    function loadSamples() {
+      if (!confirm("샘플 캐릭터를 추가할까요? 현재 데이터는 유지됩니다.")) return;
+      const now = Date.now();
+      const samples = [
+        sample("하루", "별빛 거리", "초보 배달부", ["친절함", "귀여움", "철없음", "허접미"], "잘 웃고 잘 넘어지는 초보 배달부. 마음은 앞서는데 실력은 아직 따라오지 않아서 주변이 자꾸 챙기게 된다.", { calm_intense: 14, logical_emotional: 72, careful_impulsive: 84, extrovert_introvert: 12, cooperative_independent: 28, realistic_dreamy: 18, orderly_free: 34, honest_contrarian: 24, confident_insecure: 18, caretaking_detached: 26, direct_awkward: 18, dependent_independent: 20 }, now),
+        sample("유진", "별빛 거리", "카페 오너", ["친절함", "섹시함", "어른스러움", "하라구로"], "누구에게나 상냥한 얼굴로 커피를 내리지만, 손님들의 비밀과 약점도 조용히 기억해둔다.", { calm_intense: 20, logical_emotional: 34, careful_impulsive: 24, extrovert_introvert: 78, cooperative_independent: 42, realistic_dreamy: 82, orderly_free: 46, honest_contrarian: 38, confident_insecure: 62, caretaking_detached: 34, direct_awkward: 48, dependent_independent: 82 }, now + 1),
+        sample("카이", "안개바다 군도", "용병 선장", ["싸가지없음", "섹시함", "먼치킨", "독고다이"], "말투는 최악인데 실력은 확실한 용병 선장. 남을 믿지 않는 척하지만 결정적인 순간에는 늘 먼저 움직인다.", { calm_intense: 86, logical_emotional: 28, careful_impulsive: 66, extrovert_introvert: 84, cooperative_independent: 82, realistic_dreamy: 76, orderly_free: 68, honest_contrarian: 62, confident_insecure: 92, caretaking_detached: 58, direct_awkward: 64, dependent_independent: 58 }, now + 2),
+        sample("시온", "안개바다 군도", "약사", ["친절함", "어른스러움", "돌봄형", "겉속같음"], "표정 변화에 민감한 약사. 다정하지만 만만하지 않고, 필요한 말은 조용히 끝까지 밀어붙인다.", { calm_intense: 10, logical_emotional: 70, careful_impulsive: 28, extrovert_introvert: 44, cooperative_independent: 20, realistic_dreamy: 74, orderly_free: 42, honest_contrarian: 18, confident_insecure: 54, caretaking_detached: 10, direct_awkward: 24, dependent_independent: 18 }, now + 3),
+        sample("레온", "검은 학원", "학생회장", ["클리셰적임", "먼치킨", "어른스러움", "애정 서툼"], "흐트러진 것을 못 보는 학생회장. 완벽한 왕도 라이벌처럼 보이지만, 호의 표현만큼은 묘하게 서툴다.", { calm_intense: 62, logical_emotional: 22, careful_impulsive: 18, extrovert_introvert: 70, cooperative_independent: 44, realistic_dreamy: 86, orderly_free: 10, honest_contrarian: 42, confident_insecure: 88, caretaking_detached: 38, direct_awkward: 78, dependent_independent: 34 }, now + 4),
+        sample("미카", "검은 학원", "문제아", ["싸가지없음", "귀여움", "특이함", "하라구로"], "관심 없는 척 장난만 치는 문제아. 허술해 보이지만 원하는 반응을 얻기 위해 표정까지 계산하는 타입.", { calm_intense: 78, logical_emotional: 64, careful_impulsive: 76, extrovert_introvert: 22, cooperative_independent: 76, realistic_dreamy: 24, orderly_free: 88, honest_contrarian: 86, confident_insecure: 34, caretaking_detached: 44, direct_awkward: 82, dependent_independent: 90 }, now + 5)
+      ];
+      chars = [...samples, ...chars];
+      selectedId = samples[0].id;
+      save();
+      renderAll();
+    }
+
+    function sample(name, world, role, tags, memo, traits, time) {
+      return normalize({ id: uid(), name, world, role, tags, memo, traits, createdAt: time, updatedAt: time });
+    }
+
+    function renderAll() {
+      renderCandidates();
+      renderList();
+      renderRadarOptions();
+      renderOverlayList();
+      drawRadar();
+      drawMap();
+      renderCompareOptions();
+      renderCompare();
+      renderSuggestions();
+      renderAttributeTypes();
+      renderWorldAnalysis();
+      renderTagAnalysis();
+      renderRanking();
+    }
+
+    function hexToRgba(hex, alpha) {
+      const value = hex.replace("#", "");
+      const r = parseInt(value.slice(0, 2), 16);
+      const g = parseInt(value.slice(2, 4), 16);
+      const b = parseInt(value.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(" ");
+      const lines = [];
+      let line = "";
+      words.forEach((word) => {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      });
+      lines.push(line);
+      const start = y - (lines.length - 1) * lineHeight / 2;
+      lines.forEach((ln, i) => ctx.fillText(ln, x, start + i * lineHeight));
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
